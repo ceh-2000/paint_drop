@@ -5,11 +5,11 @@ A new Flutter project.
 ## Prerequisites
 1. Install a code editor like [Android Studio](https://developer.android.com/studio?gclid=CjwKCAiA2rOeBhAsEiwA2Pl7Q12WSa4Wl206GuOh9YzMBcimmrDEISP9rX89B50LeVaQ0pRYUO6TkRoCe3EQAvD_BwE&gclsrc=aw.ds) or [VS Code](https://code.visualstudio.com/download).
 2. Install Flutter using [this](https://docs.flutter.dev/get-started/install?gclid=CjwKCAiA2rOeBhAsEiwA2Pl7Q_iIJ4SSU8DQrpevxX2g4hXcDft6TKVtt3ydtIwAqI1gckdWDbp-zhoCKU0QAvD_BwE&gclsrc=aw.ds) guide.
-3. Open command line. Run `flutter doctor` to make sure everything is working as expected. Make sure you have green checkmarks by Flutter, Android toolchain, Chrome, and VS Code/Android Studio. If you want to run your app using iOS, also make sure you have a green checkmark next to Xcode.
+3. Open terminal. Run `flutter doctor` to make sure everything is working as expected. Make sure you have green checkmarks by Flutter, Android toolchain, Chrome, and VS Code/Android Studio. If you want to run your app using iOS, also make sure you have a green checkmark next to Xcode.
 4. Follow the instructions in the guide from step 2 to set up emulators/devices for Android, iOS, and/or Chrome.
 
 ## Creating your first app
-1. In command line, create an app using `flutter create paint_drop`
+1. In terminal, create an app using `flutter create paint_drop`
 2. Navigage to your project folder using `cd paint_drop`
 3. Complete setup with `flutter run`
 4. Open your project to edit the code
@@ -36,3 +36,21 @@ A new Flutter project.
       debugShowCheckedModeBanner: false,
 ```
 Also change the app screen name `home: const MyHomePage(title: 'Paint Drop'),`
+
+## Flame game engine basics
+1. Open `pubspec.yaml` from the project directory. Change the description to `Basic Flutter game app.`
+2. Add the [`flame`](https://pub.dev/packages/flame) as a package as follows:
+```
+dependencies:
+  flutter:
+    sdk: flutter
+  flame: ^1.6.0
+```
+Check the [docs](https://pub.dev/packages/flame) for the latest version.
+3. Run `flutter pub get` from terminal to install the new dependencies or click `Pub get` in the upper right corner if you are using Android Studio.
+4. Run your app using your desired device. 
+
+
+## Resources
+1. https://docs.flame-engine.org/1.6.0/tutorials/bare_flame_game.html
+2. https://www.freepik.com/free-photos-vectors/artistic-background
