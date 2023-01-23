@@ -7,7 +7,8 @@ A new Flutter project.
 2. Install Flutter using [this](https://docs.flutter.dev/get-started/install?gclid=CjwKCAiA2rOeBhAsEiwA2Pl7Q_iIJ4SSU8DQrpevxX2g4hXcDft6TKVtt3ydtIwAqI1gckdWDbp-zhoCKU0QAvD_BwE&gclsrc=aw.ds) guide.
 3. Open terminal. Run `flutter doctor` to make sure everything is working as expected. Make sure you have green checkmarks by Flutter, Android toolchain, Chrome, and VS Code/Android Studio. If you want to run your app using iOS, also make sure you have a green checkmark next to Xcode.
 4. Follow the instructions in the guide from step 2 to set up emulators/devices for Android, iOS, and/or Chrome.
-
+Note: The first time you run your app on an iOS device, you need to do it through Xcode by right-clicking `ios` from the sidebar and selecting `Flutter/Open iOS module in Xcode`. Afterwards, you can run your app from Android Studio like normal.
+   
 ## Creating your first app
 1. In terminal, create an app using `flutter create paint_drop`
 2. Navigage to your project folder using `cd paint_drop`
