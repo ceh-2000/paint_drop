@@ -1,6 +1,6 @@
 # Paint Drop App for W&M Spring 2023 (GDSC)
 
-A new Flutter project.
+Flutter game app to demonstrate game design and app development basics.
 
 ## Prerequisites
 1. Install a code editor like [Android Studio](https://developer.android.com/studio?gclid=CjwKCAiA2rOeBhAsEiwA2Pl7Q12WSa4Wl206GuOh9YzMBcimmrDEISP9rX89B50LeVaQ0pRYUO6TkRoCe3EQAvD_BwE&gclsrc=aw.ds) or [VS Code](https://code.visualstudio.com/download).
@@ -39,16 +39,16 @@ Note: The first time you run your app on an iOS device, you need to do it throug
 Also change the app screen name `home: const MyHomePage(title: 'Paint Drop'),`
 
 ## Flame game engine basics
-1. Open `pubspec.yaml` from the project directory. Change the description to `Basic Flutter game app.`
-2. Add the [`flame`](https://pub.dev/packages/flame) as a package as follows:
+1. Open `pubspec.yaml` from the project directory. Change the description to `Basic Flutter game app.`    
+2. Add the [`flame`](https://pub.dev/packages/flame) as a package as follows:    
 ```
 dependencies:
   flutter:
     sdk: flutter
   flame: ^1.6.0
 ```
-Check the [docs](https://pub.dev/packages/flame) for the latest version.
-3. Run `flutter pub get` from terminal to install the new dependencies or click `Pub get` in the upper right corner if you are using Android Studio.
+Check the [docs](https://pub.dev/packages/flame) for the latest version.     
+3. Run `flutter pub get` from terminal to install the new dependencies or click `Pub get` in the upper right corner if you are using Android Studio.    
 4. Run your app using your desired device. 
 
 
