@@ -11,7 +11,7 @@ The presentation that accompanies this repository is [here](https://docs.google.
 4. Follow the instructions in the guide from step 2 to set up emulators/devices for Android, iOS, and/or Chrome.
 Note: The first time you run your app on an iOS device, you need to do it through Xcode by right-clicking `ios` from the sidebar and selecting `Flutter/Open iOS module in Xcode`. Afterwards, you can run your app from Android Studio like normal.
    
-## Creating your first app
+## Creating your first app (Workshop 1)
 1. In terminal, create an app using `flutter create paint_drop`
 2. Navigage to your project folder using `cd paint_drop`
 3. Complete setup with `flutter run`
@@ -40,7 +40,7 @@ Note: The first time you run your app on an iOS device, you need to do it throug
 ```
 Also change the app screen name `home: const MyHomePage(title: 'Paint Drop'),`
 
-## Flame game engine basics
+## Flame game engine basics (Workshop 2)
 1. Open `pubspec.yaml` from the project directory. Change the description to `Basic Flutter game app.`    
 2. Add the [`flame`](https://pub.dev/packages/flame) as a package as follows:    
 ```
@@ -72,14 +72,14 @@ void main() {
 ```
 8. Android Studio (or the IDE of your choice) will yell at you and say `MyGame` is not defined, so outside of the `main` function, define the `MyGame` class as follows:
 ```
-class MyGame extends FlameGame with HasDraggableComponents {
+class MyGame extends FlameGame {
   @override
   Color backgroundColor() => const Color(0xFF003366);
 }
 ```
 All we have added to the game so far is a background color instead of the default transparent background. Run your app, and you should have a dark blue background. Play around with changing the background color. Save your code and thanks to hot-reload, the new background color should render automatically.
 9. Navigate to the `lib` folder in the left menu (or via Terminal) and create a new file called `star.dart`.
-10. At the top import the following: 
+10. At the top, import the following: 
 ```
 import 'dart:math';
 import 'package:flame/components.dart';
@@ -90,8 +90,87 @@ import 'package:flame/rendering.dart';
 These are the necessary `flame` and math packages we need to create the stars that will fall from the sky and be draggable.
 7. Next create a `Star` class that extends PositionComponent, which is a Flame game component with attributes for `position`, `size`, `scale`, `angle`, and `anchor`. We will instantiate the Star class as follows:
 ```
+const tau = 2 * pi;
+class Star extends PositionComponent {
+  Star({
+    required int n,
+    required double radius1,
+    required double radius2,
+    required double sharpness,
+    required this.color,
+    required double speed,
+    required double game_width,
+    super.position,
+  }) {
+    _path = Path()..moveTo(radius1, 0);
+    for (var i = 0; i < n; i++) {
+      final p1 = Vector2(radius2, 0)..rotate(tau / n * (i + sharpness));
+      final p2 = Vector2(radius2, 0)..rotate(tau / n * (i + 1 - sharpness));
+      final p3 = Vector2(radius1, 0)..rotate(tau / n * (i + 1));
+      _path.cubicTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
+    }
+    _path.close();
 
+    _speed = speed;
+    _game_width = game_width;
+    _star_size = radius1;
+  }
+
+  final Color color;
+  final Paint _paint = Paint();
+  final Paint _borderPaint = Paint()
+    ..color = const Color(0xFFffffff)
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 3;
+  final _shadowPaint = Paint()
+    ..color = const Color(0xFF000000)
+    ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4.0);
+
+  late final Path _path;
+  late final double _speed;
+  late final double _game_width;
+  late final double _star_size;
+
+  @override
+  void render(Canvas canvas) {
+    _paint.color = color.withOpacity(1);
+    canvas.drawPath(_path, _shadowPaint);
+    canvas.drawPath(_path, _paint);
+  }
+
+  @override
+  void update(double dt) {
+    // Use the amount of time that has elapsed to inform position for smooth movement
+    super.update(dt);
+    position = Vector2(position.x, position.y + _speed * dt);
+  }
+}
 ```
+The first section is our constructor. This is where we accept arguments that describe how our stars should look from the parent class (in this case, the game controller). The next section describes variables we care about like the speed our stars will fall at, the width of the game, and the size of the stars. Finally, the `update` functions tells us how the stars should move. We want them to drop from above, so we use the elapsed time `dt` to compute the new y-position of the star while keeping the x-position the same. 
+
+8. Reload the game, but nothing appears! We need to actually add the stars to our Flame Game. Do this by going back to the `main.dart` file and creating a new variable to track the size of the star and then adding the star to our game as follows:
+```
+  double size_of_star = 30;
+
+  @override
+  Future<void> onLoad() async {
+    add(Star(
+      n: 5,
+      radius1: size_of_star,
+      radius2: size_of_star / 2,
+      sharpness: 0.2,
+      color: const Color(0xFFFDE992),
+      speed: 10.0,
+      game_width: size.x,
+      position: Vector2(50, 0),
+    ));
+```
+You should have one falling star that looks like this:
+<img width="300" alt="falling star" src="https://user-images.githubusercontent.com/34041975/217389417-27cb8be4-dc5f-4960-b366-a8ffb9dc8827.png">
+Play around with changing the color of the star, the starting position, adding more stars, etc. 
+
+** CHALLENGE: Try and make the star travel from the left side of the screen to the right side. **
+
 
 
 ## Resources
