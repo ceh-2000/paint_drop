@@ -180,15 +180,15 @@ You should have one falling star that looks like this:
 <img width="300" alt="falling star" src="https://user-images.githubusercontent.com/34041975/217389417-27cb8be4-dc5f-4960-b366-a8ffb9dc8827.png">     
 Play around with changing the color of the star, the starting position, adding more stars, etc.     
 
-** CHALLENGE: Try and make the star travel from the left side of the screen to the right side. **
+**CHALLENGE: Try and make the star travel from the left side of the screen to the right side.**
 
 ## Flame game draggable components (Workshop 2, Part 2)
 1. Now we want to make the elements of our game (the stars) draggable with the user's finger or mouse. A couple key things to consider:
 - We only want the stars to be draggable horizontally while they continue to fall vertically like Tetris:
-<img width="305" alt="Screenshot 2023-02-07 at 6 33 39 PM" src="https://user-images.githubusercontent.com/34041975/217391073-f6351997-5b89-468c-8963-0302c82c6f46.png">
+<img width="200" alt="Screenshot 2023-02-07 at 6 33 39 PM" src="https://user-images.githubusercontent.com/34041975/217391073-f6351997-5b89-468c-8963-0302c82c6f46.png">
 - We don't want users to drag stars outside the bounds of the left or right sides of the screen.
 
-** Question: How do we ensure these constraints? How do we make components draggable in the first place? **
+**Question: How do we ensure these constraints? How do we make components draggable in the first place?**
 
 Logic and [mixins](https://en.wikipedia.org/wiki/Mixin#:~:text=Mixins%20are%20a%20language%20concept,class%2C%20containing%20the%20desired%20functionality.)!
 
@@ -304,9 +304,9 @@ Make sure to import the math package at the top with the following line: `import
 
 5. Restart your code and the final app should look like this:
 
-<img width="726" alt="Multiple falling, draggable stars" src="https://user-images.githubusercontent.com/34041975/217392806-b70a9182-2dfc-4435-bba3-a89897ea89ac.png">
+<img width="300" alt="Multiple falling, draggable stars" src="https://user-images.githubusercontent.com/34041975/217392806-b70a9182-2dfc-4435-bba3-a89897ea89ac.png">
 
-** Congrats, you created your first game app! **
+**Congrats, you created your first game app!**
 
 ## Resources
 1. https://docs.flame-engine.org/1.6.0/tutorials/bare_flame_game.html
