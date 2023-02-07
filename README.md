@@ -20,7 +20,7 @@ Note: The first time you run your app on an iOS device, you need to do it throug
    open . -a "Android Studio"
    ```
    Replace "Android Studio" with "VS Code" if using that instead. 
-5. In the side project menu, delete the following directories: `macos`, `linux`, `windows`, and `test`.
+5. In the side menu at the top, click on ``Android" and select ``Project" from the dropdown menu to open your project as a Flutter project. If you already have ``Project" listed, don't change anything. Then in the side menu, delete the following directories: `macos`, `linux`, `windows`, and `test`.
 6. Create a new directory called `assets` and within assets another directory called `images`. The results project path should be `paint_drop/assets/images`. Drop the game images into this new folder. 
 7. Point your app to this images folder by opening the `pubspec.yaml` file located at the project root, scrolling down, and adding:
 ```
@@ -52,8 +52,50 @@ dependencies:
 Check the [docs](https://pub.dev/packages/flame) for the latest version.     
 3. Run `flutter pub get` from terminal to install the new dependencies or click `Pub get` in the upper right corner if you are using Android Studio.    
 4. Run your app using your desired device. 
+5. Navigate to the `lib` folder and open `main.dart`. Delete everything in this file. We want to create a new game instance.
+6. Add the following imports to the top of `main.dart`:
+```
+import 'package:flame/experimental.dart';
+import 'package:flame/game.dart';
+import 'package:flutter/material.dart';
+```
+These allow us to use Flame's game packages and the Material theming packages with Flutter. 
+7. Now define a new `main` function as follows that will get executed first when you run your app:
+```
+void main() {
+  runApp(
+    GameWidget(
+      game: MyGame(),
+    ),
+  );
+}
+```
+8. Android Studio (or the IDE of your choice) will yell at you and say `MyGame` is not defined, so outside of the `main` function, define the `MyGame` class as follows:
+```
+class MyGame extends FlameGame with HasDraggableComponents {
+  @override
+  Color backgroundColor() => const Color(0xFF003366);
+}
+```
+All we have added to the game so far is a background color instead of the default transparent background. Run your app, and you should have a dark blue background. Play around with changing the background color. Save your code and thanks to hot-reload, the new background color should render automatically.
+9. Navigate to the `lib` folder in the left menu (or via Terminal) and create a new file called `star.dart`.
+10. At the top import the following: 
+```
+import 'dart:math';
+import 'package:flame/components.dart';
+import 'package:flame/experimental.dart';
+import 'package:flame/game.dart';
+import 'package:flame/rendering.dart';
+```
+These are the necessary `flame` and math packages we need to create the stars that will fall from the sky and be draggable.
+7. Next create a `Star` class that extends PositionComponent, which is a Flame game component with attributes for `position`, `size`, `scale`, `angle`, and `anchor`. We will instantiate the Star class as follows:
+```
+
+```
 
 
 ## Resources
 1. https://docs.flame-engine.org/1.6.0/tutorials/bare_flame_game.html
 2. https://www.freepik.com/free-photos-vectors/artistic-background
+3. https://medium.com/simform-engineering/basics-of-game-development-using-flame-bee1b8cf7320
+4. https://medium.com/simform-engineering/build-collision-based-game-using-flame-in-flutter-ba1fc86702bd
