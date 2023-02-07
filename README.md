@@ -78,7 +78,9 @@ class MyGame extends FlameGame {
 }
 ```
 All we have added to the game so far is a background color instead of the default transparent background. Run your app, and you should have a dark blue background. Play around with changing the background color. Save your code and thanks to hot-reload, the new background color should render automatically.
+
 9. Navigate to the `lib` folder in the left menu (or via Terminal) and create a new file called `star.dart`.
+
 10. At the top, import the following: 
 ```
 import 'dart:math';
@@ -88,7 +90,8 @@ import 'package:flame/game.dart';
 import 'package:flame/rendering.dart';
 ```
 These are the necessary `flame` and math packages we need to create the stars that will fall from the sky and be draggable.
-7. Next create a `Star` class that extends PositionComponent, which is a Flame game component with attributes for `position`, `size`, `scale`, `angle`, and `anchor`. We will instantiate the Star class as follows:
+
+11. Next create a `Star` class that extends PositionComponent, which is a Flame game component with attributes for `position`, `size`, `scale`, `angle`, and `anchor`. We will instantiate the Star class as follows:
 ```
 const tau = 2 * pi;
 class Star extends PositionComponent {
@@ -148,7 +151,7 @@ class Star extends PositionComponent {
 ```
 The first section is our constructor. This is where we accept arguments that describe how our stars should look from the parent class (in this case, the game controller). The next section describes variables we care about like the speed our stars will fall at, the width of the game, and the size of the stars. Finally, the `update` functions tells us how the stars should move. We want them to drop from above, so we use the elapsed time `dt` to compute the new y-position of the star while keeping the x-position the same. 
 
-8. Reload the game, but nothing appears! We need to actually add the stars to our Flame Game. Do this by going back to the `main.dart` file and creating a new variable to track the size of the star and then adding the star to our game as follows:
+12. Reload the game, but nothing appears! We need to actually add the stars to our Flame Game. Do this by going back to the `main.dart` file and creating a new variable to track the size of the star and then adding the star to our game as follows:
 ```
   double size_of_star = 30;
 
