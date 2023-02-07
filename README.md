@@ -4,7 +4,7 @@ Flutter game app to demonstrate game design and app development basics.
 
 The presentation that accompanies this repository is [here](https://docs.google.com/presentation/d/164_ThDXfw_-uM7lYJTq7KEzJL6aox_4M/edit?usp=sharing&ouid=105181047619494018000&rtpof=true&sd=true).
 
-## Prerequisites
+## Prerequisites (Workshop 1, Part 1)
 1. Install a code editor like [Android Studio](https://developer.android.com/studio?gclid=CjwKCAiA2rOeBhAsEiwA2Pl7Q12WSa4Wl206GuOh9YzMBcimmrDEISP9rX89B50LeVaQ0pRYUO6TkRoCe3EQAvD_BwE&gclsrc=aw.ds) or [VS Code](https://code.visualstudio.com/download).
 2. Install Flutter using [this](https://docs.flutter.dev/get-started/install?gclid=CjwKCAiA2rOeBhAsEiwA2Pl7Q_iIJ4SSU8DQrpevxX2g4hXcDft6TKVtt3ydtIwAqI1gckdWDbp-zhoCKU0QAvD_BwE&gclsrc=aw.ds) guide.
 3. Open terminal. Run `flutter doctor` to make sure everything is working as expected. Make sure you have green checkmarks by Flutter, Android toolchain, Chrome, and VS Code/Android Studio. If you want to run your app using iOS, also make sure you have a green checkmark next to Xcode.
@@ -13,7 +13,7 @@ Note: The first time you run your app on an iOS device, you need to do it throug
 
 > ❗️⚠️ If running `flutter` commands aren't recognized you need to add the `flutter/bin` folder to PATH. For instructions see [MacOS](https://docs.flutter.dev/get-started/install/macos#update-your-path), [Windows](https://docs.flutter.dev/get-started/install/windows#update-your-path), or [Linux](https://docs.flutter.dev/get-started/install/linux#update-your-path) .
    
-## Creating your first app (Workshop 1)
+## Creating your first app (Workshop 1, Part 2)
 1. In terminal, create an app using `flutter create paint_drop`
 2. Navigage to your project folder using `cd paint_drop`
 3. Complete setup with `flutter run`
@@ -42,7 +42,7 @@ Note: The first time you run your app on an iOS device, you need to do it throug
 ```
 Also change the app screen name `home: const MyHomePage(title: 'Paint Drop'),`
 
-## Flame game engine basics (Workshop 2)
+## Flame game engine basics (Workshop 2, Part 1)
 1. Open `pubspec.yaml` from the project directory. Change the description to `Basic Flutter game app.`    
 2. Add the [`flame`](https://pub.dev/packages/flame) as a package as follows:    
 ```
@@ -182,7 +182,131 @@ Play around with changing the color of the star, the starting position, adding m
 
 ** CHALLENGE: Try and make the star travel from the left side of the screen to the right side. **
 
+## Flame game draggable components (Workshop 2, Part 2)
+1. Now we want to make the elements of our game (the stars) draggable with the user's finger or mouse. A couple key things to consider:
+- We only want the stars to be draggable horizontally while they continue to fall vertically like Tetris:
+<img width="305" alt="Screenshot 2023-02-07 at 6 33 39 PM" src="https://user-images.githubusercontent.com/34041975/217391073-f6351997-5b89-468c-8963-0302c82c6f46.png">
+- We don't want users to drag stars outside the bounds of the left or right sides of the screen.
 
+** Question: How do we ensure these constraints? How do we make components draggable in the first place? **
+
+Logic and [mixins](https://en.wikipedia.org/wiki/Mixin#:~:text=Mixins%20are%20a%20language%20concept,class%2C%20containing%20the%20desired%20functionality.)!
+
+2. Change the class declaration in `main.dart` to `class MyGame extends FlameGame with HasDraggableComponents` enable draggable components in our game. Similarly, in `star.dart`, change the class declaration to `class Star extends PositionComponent with DragCallbacks`. 
+
+3. Still in `star.dart`, add the following after `late final double _star_size;`, replacing the existing `render` and `update` functions:
+
+```
+bool _isDragged = false;
+
+  @override
+  bool containsLocalPoint(Vector2 point) {
+    // Checks when we intersect with where the user is tapping
+    // Supports dragging functionality
+    return _path.contains(point.toOffset());
+  }
+
+  @override
+  void render(Canvas canvas) {
+    // While star is being dragged, indicate this with shadows and a border
+    if (_isDragged) {
+      _paint.color = color.withOpacity(0.5);
+      canvas.drawPath(_path, _paint);
+      canvas.drawPath(_path, _borderPaint);
+    }
+    // When not dragging, star is normal
+    else {
+      _paint.color = color.withOpacity(1);
+      canvas.drawPath(_path, _shadowPaint);
+      canvas.drawPath(_path, _paint);
+    }
+  }
+
+  @override
+  void update(double dt) {
+    // Use the amount of time that has elapsed to inform position for smooth movement
+    super.update(dt);
+    position = Vector2(position.x, position.y + _speed * dt);
+
+    // Pause spinning when dragging stars
+    if(_isDragged == false){
+      angle += dt * 2;
+      angle %= 2 * pi;
+    }
+  }
+
+  @override
+  void onDragStart(DragStartEvent event) {
+    _isDragged = true;
+    priority = 10; // Brings star to front of overlap
+  }
+
+  @override
+  void onDragEnd(DragEndEvent event) {
+    _isDragged = false;
+    priority = 0; // Return to default depth
+  }
+
+  @override
+  void onDragUpdate(DragUpdateEvent event) {
+    // While user is dragging and we intersect motion with star, update star position
+    double new_pos = position.x + event.delta.x;
+
+    // Don't let star get dragged beyond right side bounds
+    if(new_pos > _game_width - _star_size){
+      new_pos = _game_width - _star_size;
+    }
+
+    // Don't let star get dragged beyond left side bounds
+    else if(new_pos < _star_size){
+      new_pos = _star_size;
+    }
+
+    // Set the new x-position; y-position stays the same
+    position = Vector2(new_pos, position.y);
+  }
+```
+If you stop and restart the app, you should have a single star falling from the sky that you can drag left and right horizontally and not beyond the bounds of the screen. 
+
+4. To create more stars, update your `main.dart` file with the following: 
+```
+  @override
+  Future<void> onLoad() async {
+    // Constants
+    int number_of_stars = 20;
+    int pixels_between_stars = 100;
+    double size_of_star = 30;
+
+    // Use a for-loop
+    for (var i = 0; i < number_of_stars * pixels_between_stars;
+    i = i + pixels_between_stars) {
+      // Create a new random number
+      Random rnd = Random();
+      int min = size_of_star.toInt();
+      int max = (size.x.toInt() - size_of_star).toInt();
+      int r = min + rnd.nextInt(max - min);
+
+      // Create new stars positioned evenly height-wise and randomly width-wise
+      add(Star(
+        n: 5,
+        radius1: size_of_star,
+        radius2: size_of_star / 2,
+        sharpness: 0.2,
+        color: const Color(0xFFFDE992),
+        speed: 10.0,
+        game_width: size.x,
+        position: Vector2(r.toDouble(), -i.toDouble()),
+      ));
+    }
+  }
+```
+Make sure to import the math package at the top with the following line: `import 'dart:math';`.
+
+5. Restart your code and the final app should look like this:
+
+<img width="726" alt="Multiple falling, draggable stars" src="https://user-images.githubusercontent.com/34041975/217392806-b70a9182-2dfc-4435-bba3-a89897ea89ac.png">
+
+** Congrats, you created your first game app! **
 
 ## Resources
 1. https://docs.flame-engine.org/1.6.0/tutorials/bare_flame_game.html
