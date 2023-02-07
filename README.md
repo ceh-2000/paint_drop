@@ -51,7 +51,7 @@ dependencies:
 ```
 Check the [docs](https://pub.dev/packages/flame) for the latest version.     
 3. Run `flutter pub get` from terminal to install the new dependencies or click `Pub get` in the upper right corner if you are using Android Studio.    
-4. Run your app using your desired device. 
+4. Run your app using your desired device.
 5. Navigate to the `lib` folder and open `main.dart`. Delete everything in this file. We want to create a new game instance.
 6. Add the following imports to the top of `main.dart`:
 ```
@@ -59,7 +59,7 @@ import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 ```
-These allow us to use Flame's game packages and the Material theming packages with Flutter. 
+These allow us to use Flame's game packages and the Material theming packages with Flutter.   
 7. Now define a new `main` function as follows that will get executed first when you run your app:
 ```
 void main() {
@@ -69,7 +69,7 @@ void main() {
     ),
   );
 }
-```
+```  
 8. Android Studio (or the IDE of your choice) will yell at you and say `MyGame` is not defined, so outside of the `main` function, define the `MyGame` class as follows:
 ```
 class MyGame extends FlameGame {
@@ -77,10 +77,8 @@ class MyGame extends FlameGame {
   Color backgroundColor() => const Color(0xFF003366);
 }
 ```
-All we have added to the game so far is a background color instead of the default transparent background. Run your app, and you should have a dark blue background. Play around with changing the background color. Save your code and thanks to hot-reload, the new background color should render automatically.
-
-9. Navigate to the `lib` folder in the left menu (or via Terminal) and create a new file called `star.dart`.
-
+All we have added to the game so far is a background color instead of the default transparent background. Run your app, and you should have a dark blue background. Play around with changing the background color. Save your code and thanks to hot-reload, the new background color should render automatically.   
+9. Navigate to the `lib` folder in the left menu (or via Terminal) and create a new file called `star.dart`.   
 10. At the top, import the following: 
 ```
 import 'dart:math';
@@ -89,8 +87,7 @@ import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
 import 'package:flame/rendering.dart';
 ```
-These are the necessary `flame` and math packages we need to create the stars that will fall from the sky and be draggable.
-
+These are the necessary `flame` and math packages we need to create the stars that will fall from the sky and be draggable.   
 11. Next create a `Star` class that extends PositionComponent, which is a Flame game component with attributes for `position`, `size`, `scale`, `angle`, and `anchor`. We will instantiate the Star class as follows:
 ```
 const tau = 2 * pi;
@@ -149,8 +146,7 @@ class Star extends PositionComponent {
   }
 }
 ```
-The first section is our constructor. This is where we accept arguments that describe how our stars should look from the parent class (in this case, the game controller). The next section describes variables we care about like the speed our stars will fall at, the width of the game, and the size of the stars. Finally, the `update` functions tells us how the stars should move. We want them to drop from above, so we use the elapsed time `dt` to compute the new y-position of the star while keeping the x-position the same. 
-
+The first section is our constructor. This is where we accept arguments that describe how our stars should look from the parent class (in this case, the game controller). The next section describes variables we care about like the speed our stars will fall at, the width of the game, and the size of the stars. Finally, the `update` functions tells us how the stars should move. We want them to drop from above, so we use the elapsed time `dt` to compute the new y-position of the star while keeping the x-position the same.     
 12. Reload the game, but nothing appears! We need to actually add the stars to our Flame Game. Do this by going back to the `main.dart` file and creating a new variable to track the size of the star and then adding the star to our game as follows:
 ```
   double size_of_star = 30;
@@ -168,9 +164,9 @@ The first section is our constructor. This is where we accept arguments that des
       position: Vector2(50, 0),
     ));
 ```
-You should have one falling star that looks like this:
-<img width="300" alt="falling star" src="https://user-images.githubusercontent.com/34041975/217389417-27cb8be4-dc5f-4960-b366-a8ffb9dc8827.png">
-Play around with changing the color of the star, the starting position, adding more stars, etc. 
+You should have one falling star that looks like this:   
+<img width="300" alt="falling star" src="https://user-images.githubusercontent.com/34041975/217389417-27cb8be4-dc5f-4960-b366-a8ffb9dc8827.png">     
+Play around with changing the color of the star, the starting position, adding more stars, etc.     
 
 ** CHALLENGE: Try and make the star travel from the left side of the screen to the right side. **
 
