@@ -92,10 +92,9 @@ All we have added to the game so far is a background color instead of the defaul
 10. At the top, import the following: 
 ```
 import 'dart:math';
+import 'dart:ui';
 import 'package:flame/components.dart';
-import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
-import 'package:flame/rendering.dart';
 ```
 These are the necessary `flame` and math packages we need to create the stars that will fall from the sky and be draggable.   
 
@@ -159,7 +158,7 @@ class Star extends PositionComponent {
 ```
 The first section is our constructor. This is where we accept arguments that describe how our stars should look from the parent class (in this case, the game controller). The next section describes variables we care about like the speed our stars will fall at, the width of the game, and the size of the stars. Finally, the `update` functions tells us how the stars should move. We want them to drop from above, so we use the elapsed time `dt` to compute the new y-position of the star while keeping the x-position the same.     
 
-12. Reload the game, but nothing appears! We need to actually add the stars to our Flame Game. Do this by going back to the `main.dart` file and creating a new variable to track the size of the star and then adding the star to our game as follows:
+12. Reload the game, but nothing appears! We need to actually add the stars to our Flame Game. Do this by going back to the `main.dart` file and creating a new variable to track the size of the star and then adding the star to our game as follows directly under `Color backgroundColor() => const Color(0xFF003366);`:
 ```
   double size_of_star = 30;
 
@@ -175,6 +174,7 @@ The first section is our constructor. This is where we accept arguments that des
       game_width: size.x,
       position: Vector2(50, 0),
     ));
+    }
 ```
 You should have one falling star that looks like this:   
 <img width="300" alt="falling star" src="https://user-images.githubusercontent.com/34041975/217389417-27cb8be4-dc5f-4960-b366-a8ffb9dc8827.png">     
