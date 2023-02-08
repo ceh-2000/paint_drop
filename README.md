@@ -4,7 +4,7 @@ Flutter game app to demonstrate game design and app development basics.
 
 The presentation that accompanies this repository is [here](https://docs.google.com/presentation/d/164_ThDXfw_-uM7lYJTq7KEzJL6aox_4M/edit?usp=sharing&ouid=105181047619494018000&rtpof=true&sd=true).
 
-## Prerequisites (Workshop 1, Part 1)
+## Prerequisites 
 1. Install a code editor like [Android Studio](https://developer.android.com/studio?gclid=CjwKCAiA2rOeBhAsEiwA2Pl7Q12WSa4Wl206GuOh9YzMBcimmrDEISP9rX89B50LeVaQ0pRYUO6TkRoCe3EQAvD_BwE&gclsrc=aw.ds) or [VS Code](https://code.visualstudio.com/download).
 2. Install Flutter using [this](https://docs.flutter.dev/get-started/install?gclid=CjwKCAiA2rOeBhAsEiwA2Pl7Q_iIJ4SSU8DQrpevxX2g4hXcDft6TKVtt3ydtIwAqI1gckdWDbp-zhoCKU0QAvD_BwE&gclsrc=aw.ds) guide.
 3. Open terminal. Run `flutter doctor` to make sure everything is working as expected. Make sure you have green checkmarks by Flutter, Android toolchain, Chrome, and VS Code/Android Studio. If you want to run your app using iOS, also make sure you have a green checkmark next to Xcode.
@@ -13,7 +13,7 @@ Note: The first time you run your app on an iOS device, you need to do it throug
 
 > ❗️⚠️ If running `flutter` commands aren't recognized you need to add the `flutter/bin` folder to PATH. For instructions see [MacOS](https://docs.flutter.dev/get-started/install/macos#update-your-path), [Windows](https://docs.flutter.dev/get-started/install/windows#update-your-path), or [Linux](https://docs.flutter.dev/get-started/install/linux#update-your-path) .
    
-## Creating your first app (Workshop 1, Part 2)
+## Creating your first app (Workshop 1)
 1. In terminal, create an app using `flutter create paint_drop`
 2. Navigage to your project folder using `cd paint_drop`
 3. Complete setup with `flutter run`
@@ -42,7 +42,7 @@ Note: The first time you run your app on an iOS device, you need to do it throug
 ```
 Also change the app screen name `home: const MyHomePage(title: 'Paint Drop'),`
 
-## Flame game engine basics (Workshop 2, Part 1)
+## Flame game engine basics (Workshop 2)
 1. Open `pubspec.yaml` from the project directory. Change the description to `Basic Flutter game app.`    
 2. Add the [`flame`](https://pub.dev/packages/flame) as a package as follows:    
 ```
@@ -182,7 +182,7 @@ Play around with changing the color of the star, the starting position, adding m
 
 **CHALLENGE: Try and make the star travel from the left side of the screen to the right side.**
 
-## Flame game draggable components (Workshop 2, Part 2)
+## Flame game draggable components (Workshop 3)
 1. Now we want to make the elements of our game (the stars) draggable with the user's finger or mouse. A couple key things to consider:
 - We only want the stars to be draggable horizontally while they continue to fall vertically like Tetris:
 <img width="200" alt="Screenshot 2023-02-07 at 6 33 39 PM" src="https://user-images.githubusercontent.com/34041975/217391073-f6351997-5b89-468c-8963-0302c82c6f46.png">
