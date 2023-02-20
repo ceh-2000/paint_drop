@@ -306,10 +306,317 @@ Make sure to import the math package at the top with the following line: `import
 
 <img width="300" alt="Multiple falling, draggable stars" src="https://user-images.githubusercontent.com/34041975/217392806-b70a9182-2dfc-4435-bba3-a89897ea89ac.png">
 
-**Congrats, you created your first game app!**
+## Adding images (Workshop 4)
+1. In `main.dart`, add the following lines under `double size_of_star = 30;` to read in images previously added to our `assets` folder. If you don't have these files in place, follow the instructions for Workshop 1. 
+```
+    // Load all images
+    final redDrop = await images.load('red_drop.png');
+    final blueDrop = await images.load('blue_drop.png');
+    final pinkDrop = await images.load('pink_drop.png');
+    final yellowDrop = await images.load('yellow_drop.png');
+
+    final redBucket = await images.load('red_bucket.png');
+    final blueBucket = await images.load('blue_bucket.png');
+    final pinkBucket = await images.load('pink_bucket.png');
+    final yellowBucket = await images.load('yellow_bucket.png');
+```
+**Note: A cleaner implementation (and easier on the memory) would be to use the assets sheet `buckets_and_drops.png` and offset to the desired image. See how to do that [here](https://docs.flame-engine.org/1.6.0/flame/rendering/images.html#sprite). We don't have many images, so this isn't super necessary.**
+2. Still in `main.dart`, comment out the code that adds a new `Star` to the screen. Paste in the following code to render our paint drop:
+```
+add(SpriteComponent(
+   sprite: Sprite(redDrop),
+   position: size / 2,
+   size: Vector2(size_of_star*0.75, size_of_star),
+   anchor: Anchor.center,
+));
+```
+Save and reload your app. You should have what looks like a single red paint drop on your screen.
+3. Now we want to create two new classes: one for paint drops and one for paint buckets. Don't worry about the `Star` class; we'll use the logic as a template for the paint drop class. In the `lib` folder create two new files called `paint_drop.dart` and `paint_bucket.dart`.
+4. We want to move the logic from `main.dart` to our new class `paint_drop.dart` as follows:
+- In `paint_drop.dart`, add the following:
+```
+import 'package:flame/components.dart';
+import 'package:flame/experimental.dart';
+
+class PaintDrop extends SpriteComponent with DragCallbacks {
+  PaintDrop({
+    super.sprite,
+    super.position,
+    super.size,
+    super.anchor,
+  }){}
+}
+```
+For now, we just pass everything to the parent construction, `SpriteComponent`.
+- In `main.dart`, import `import 'package:paint_drop/paint_drop.dart';` at the top and comment out where we add the `SpriteComponent` and add the following:
+```
+add(PaintDrop(
+   sprite: Sprite(redDrop),
+   position: size / 2,
+   size: Vector2(size_of_star * 0.75, size_of_star),
+   anchor: Anchor.center,
+));
+```
+Save and restart the app. It should look the same as before with just a single red paint drop in the middle of the screen.
+5. With the `SpriteComponent` logic now in its own file, let's add back in the logic from `star.dart`. Modify `paint_drop.dart` to look like the following:
+```
+import 'package:flame/components.dart';
+import 'package:flame/experimental.dart';
+
+class PaintDrop extends SpriteComponent with DragCallbacks {
+  PaintDrop({
+    super.sprite,
+    super.position,
+    super.size,
+    super.anchor,
+    required double speed,
+    required double game_width,
+  }){
+    _speed = speed;
+    _game_width = game_width;
+    _buffer = size[0];
+  }
+
+  late final double _speed;
+  late final double _game_width;
+  late final double _buffer;
+
+
+  @override
+  void update(double dt) {
+    // Use the amount of time that has elapsed to inform position for smooth movement
+    super.update(dt);
+    position = Vector2(position.x, position.y + _speed * dt);
+  }
+
+  @override
+  void onDragStart(DragStartEvent event) {
+    priority = 10; // Brings star to front of overlap
+  }
+
+  @override
+  void onDragEnd(DragEndEvent event) {
+    priority = 0; // Return to default depth
+  }
+
+  @override
+  void onDragUpdate(DragUpdateEvent event) {
+    // While user is dragging and we intersect motion with star, update star position
+    double new_pos = position.x + event.delta.x;
+
+    // Don't let star get dragged beyond right side bounds
+    if(new_pos > _game_width - _buffer){
+      new_pos = _game_width - _buffer;
+    }
+
+    // Don't let star get dragged beyond left side bounds
+    else if(new_pos < _buffer){
+      new_pos = _buffer;
+    }
+
+    // Set the new x-position; y-position stays the same
+    position = Vector2(new_pos, position.y);
+  }
+}
+```
+Most of the above code is directly copied from the `Star` class. Go back to the explanations for Workshops 2 & 3 if you are confused. If you try to save and reload the app, you will get errors because we have not passed in a `speed` or `game_width` to the `PaintDrop` object created in `main.dart`. Navigate to `main.dart` and make the following update:
+```
+add(PaintDrop(
+   sprite: Sprite(redDrop),
+   position: Vector2(r.toDouble(), -i.toDouble()),
+   size: Vector2(size_of_star * 0.75, size_of_star),
+   anchor: Anchor.center,
+   speed: 10.0,
+   game_width: size.x,
+));
+```
+We also add back in the logic to make the paint drops appear at random along the width of the screen.
+6. Now for some refactoring to add a background image and mutliple drop colors. The resulting `main.dart` file looks like this:
+```
+import 'dart:math';
+import 'package:flame/components.dart';
+import 'package:flame/experimental.dart';
+import 'package:flame/game.dart';
+import 'package:flutter/material.dart';
+import 'package:paint_drop/paint_drop.dart';
+
+void main() {
+  runApp(
+    GameWidget(
+      game: MyGame(),
+    ),
+  );
+}
+
+class MyGame extends FlameGame with HasDraggableComponents {
+  @override
+  Future<void> onLoad() async {
+    // Constants
+    int number_of_drops = 20;
+    int pixels_between_drops = 100;
+    double size_of_drop = 50;
+    int num_colors = 4;
+
+    // Load all images
+    final redDrop = await images.load('red_drop.png');
+    final blueDrop = await images.load('blue_drop.png');
+    final pinkDrop = await images.load('pink_drop.png');
+    final yellowDrop = await images.load('yellow_drop.png');
+
+    final redBucket = await images.load('red_bucket.png');
+    final blueBucket = await images.load('blue_bucket.png');
+    final pinkBucket = await images.load('pink_bucket.png');
+    final yellowBucket = await images.load('yellow_bucket.png');
+
+    final background = await images.load('background.png');
+    add(SpriteComponent(
+        sprite: Sprite(background),
+        size: Vector2(size.x, size.y),
+        position: Vector2(0, 0)));
+
+    // Use a for-loop
+    for (var i = 0;
+        i < number_of_drops * pixels_between_drops;
+        i = i + pixels_between_drops) {
+      // Create a random number to determine where along the x-axis the
+      // paint drop should fall
+      Random rnd_loc = Random();
+      int min_loc = size_of_drop.toInt();
+      int max_loc = (size.x.toInt() - size_of_drop).toInt();
+      int r_loc = min_loc + rnd_loc.nextInt(max_loc - min_loc);
+
+      // Create a random number to determine which color drop we create on
+      // this iteration of the for-loop
+      Random rnd_color = Random();
+      int min_color = 1;
+      int max_color = num_colors;
+      int r_color = min_color + rnd_color.nextInt(max_color - min_color);
+
+      // Create corresponding drop color
+      Sprite sprite;
+      String color;
+      switch (r_color) {
+        case 1:
+          {
+            sprite = Sprite(redDrop);
+            color = 'red';
+          }
+          break;
+        case 2:
+          {
+            sprite = Sprite(blueDrop);
+            color = 'blue';
+          }
+          break;
+        case 3:
+          {
+            sprite = Sprite(pinkDrop);
+            color = 'pink';
+          }
+          break;
+        default:
+          {
+            sprite = Sprite(yellowDrop);
+            color = 'yellow';
+          }
+          break;
+      }
+
+      // Add the paint drop to our canvas
+      add(PaintDrop(
+          sprite: sprite,
+          position: Vector2(r_loc.toDouble(), -i.toDouble()),
+          size: Vector2(size_of_drop * 0.75, size_of_drop),
+          anchor: Anchor.center,
+          speed: 10.0,
+          game_width: size.x,
+          color: color));
+    }
+  }
+}
+```
+and `paint_drop.dart` has the added `color` field like this:
+```
+PaintDrop({
+    super.sprite,
+    super.position,
+    super.size,
+    super.anchor,
+    required double speed,
+    required double game_width,
+    required String color, // <-- HERE
+  }){
+    _speed = speed;
+    _game_width = game_width;
+    _color = color; // <-- HERE
+    _buffer = size[0];
+  }
+
+  late final double _speed;
+  late final double _game_width;
+  late final String _color; // <-- HERE
+  late final double _buffer; 
+```
+7. At this stage, we are ready to add in our paint buckets. Remember, the goal of the game will be to drag the correct paint drop color above the correct paint bucket. Let's start by creating our `PaintBucket` class. It's much simpler than our `PaintDrop` class because the buckets are stationary. For now, we don't even need an update function:
+```
+import 'package:flame/components.dart';
+
+class PaintBucket extends SpriteComponent {
+  PaintBucket({
+    super.sprite,
+    super.position,
+    super.size,
+    super.anchor,
+  }){}
+}
+```
+In `main.dart`, just under where we set the background image, instatiate new `PaintBucket` objects:
+```
+   // Add the static background image
+    add(SpriteComponent(
+        sprite: Sprite(background),
+        size: Vector2(size.x, size.y),
+        position: Vector2(0, 0)));
+   
+    //////////////// NEW BELOW ////////////////
+    
+    // Add the static paint buckets
+    add(PaintBucket(
+      sprite: Sprite(redBucket),
+      position: Vector2(size.x * 0.2, size.y - size_of_bucket - 50),
+      size: Vector2(size_of_bucket, size_of_bucket),
+      anchor: Anchor.center,
+    ));
+    add(PaintBucket(
+      sprite: Sprite(blueBucket),
+      position: Vector2(size.x * 0.4, size.y - size_of_bucket - 50),
+      size: Vector2(size_of_bucket, size_of_bucket),
+      anchor: Anchor.center,
+    ));
+    add(PaintBucket(
+      sprite: Sprite(pinkBucket),
+      position: Vector2(size.x * 0.6, size.y - size_of_bucket - 50),
+      size: Vector2(size_of_bucket, size_of_bucket),
+      anchor: Anchor.center,
+    ));
+    add(PaintBucket(
+      sprite: Sprite(yellowBucket),
+      position: Vector2(size.x * 0.8, size.y - size_of_bucket - 50),
+      size: Vector2(size_of_bucket, size_of_bucket),
+      anchor: Anchor.center,
+    ));
+```
+We add 4 paint buckets for our 4 colors. We also position each bucket equidistance from each other across the screen using the `size` parameter provided by the game class. Lastly, we set the size and anchor positions.
+
+## Adding collision logic (Workshop 5)
+Now that our game looks prettier and we have basic dragging logic in place, we want to detect collisions between buckets and paint drops. Why? 2 reasons
+- If a paint drop goes "into" a bucket, we want it to disappear!
+- We want to keep track of whether paint drops going into the correct color paint bucket to give us a value to keep track of as the score for our game. 
+
 
 ## Resources
 1. https://docs.flame-engine.org/1.6.0/tutorials/bare_flame_game.html
 2. https://www.freepik.com/free-photos-vectors/artistic-background
 3. https://medium.com/simform-engineering/basics-of-game-development-using-flame-bee1b8cf7320
 4. https://medium.com/simform-engineering/build-collision-based-game-using-flame-in-flutter-ba1fc86702bd
+5. https://github.com/flame-engine/flame/blob/main/examples/lib/stories/sprites/basic_sprite_example.dart
