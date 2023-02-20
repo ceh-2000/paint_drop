@@ -564,7 +564,8 @@ PaintDrop({
   late final String _color; // <-- HERE
   late final double _buffer; 
 ```
-Reloading the app should yield somthing that looks like this:
+Reloading the app should yield somthing that looks like this:     
+
 <img width="400" alt="Paint drops falling" src="https://user-images.githubusercontent.com/34041975/220024303-d590f292-6498-4977-ab4b-8706995bcb81.png">
 
 
