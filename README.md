@@ -4,6 +4,13 @@ Flutter game app to demonstrate game design and app development basics.
 
 The presentation that accompanies this repository is [here](https://docs.google.com/presentation/d/164_ThDXfw_-uM7lYJTq7KEzJL6aox_4M/edit?usp=sharing&ouid=105181047619494018000&rtpof=true&sd=true).
 
+Shortcuts to workshop instructions:
+- [Workshop 1](https://github.com/ceh-2000/paint_drop#creating-your-first-app-workshop-1)
+- [Workshop 2](https://github.com/ceh-2000/paint_drop#flame-game-engine-basics-workshop-2)
+- [Workshop 3](https://github.com/ceh-2000/paint_drop#flame-game-draggable-components-workshop-3)
+- [Workshop 4](https://github.com/ceh-2000/paint_drop#adding-images-workshop-4)
+- [Workshop 5](https://github.com/ceh-2000/paint_drop#adding-collision-logic-workshop-5)
+
 ## Prerequisites 
 1. Install a code editor like [Android Studio](https://developer.android.com/studio?gclid=CjwKCAiA2rOeBhAsEiwA2Pl7Q12WSa4Wl206GuOh9YzMBcimmrDEISP9rX89B50LeVaQ0pRYUO6TkRoCe3EQAvD_BwE&gclsrc=aw.ds) or [VS Code](https://code.visualstudio.com/download).
 2. Install Flutter using [this](https://docs.flutter.dev/get-started/install?gclid=CjwKCAiA2rOeBhAsEiwA2Pl7Q_iIJ4SSU8DQrpevxX2g4hXcDft6TKVtt3ydtIwAqI1gckdWDbp-zhoCKU0QAvD_BwE&gclsrc=aw.ds) guide.
@@ -557,6 +564,9 @@ PaintDrop({
   late final String _color; // <-- HERE
   late final double _buffer; 
 ```
+Reloading the app should yield somthing that looks like this:
+![Uploading Screenshot 2023-02-20 at 12.38.40 AM.png…]()
+
 7. At this stage, we are ready to add in our paint buckets. Remember, the goal of the game will be to drag the correct paint drop color above the correct paint bucket. Let's start by creating our `PaintBucket` class. It's much simpler than our `PaintDrop` class because the buckets are stationary. For now, we don't even need an update function:
 ```
 import 'package:flame/components.dart';
@@ -570,7 +580,7 @@ class PaintBucket extends SpriteComponent {
   }){}
 }
 ```
-In `main.dart`, just under where we set the background image, instatiate new `PaintBucket` objects:
+In `main.dart`, just under where we set the background image, instantiate new `PaintBucket` objects:
 ```
    // Add the static background image
     add(SpriteComponent(
