@@ -565,7 +565,7 @@ PaintDrop({
   late final double _buffer; 
 ```
 Reloading the app should yield somthing that looks like this:
-<img width="756" alt="Screenshot 2023-02-20 at 12 38 40 AM" src="https://user-images.githubusercontent.com/34041975/220024303-d590f292-6498-4977-ab4b-8706995bcb81.png">
+<img width="400" alt="Paint drops falling" src="https://user-images.githubusercontent.com/34041975/220024303-d590f292-6498-4977-ab4b-8706995bcb81.png">
 
 
 7. At this stage, we are ready to add in our paint buckets. Remember, the goal of the game will be to drag the correct paint drop color above the correct paint bucket. Let's start by creating our `PaintBucket` class. It's much simpler than our `PaintDrop` class because the buckets are stationary. For now, we don't even need an update function:
