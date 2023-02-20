@@ -620,6 +620,9 @@ In `main.dart`, just under where we set the background image, instantiate new `P
 ```
 We add 4 paint buckets for our 4 colors. We also position each bucket equidistance from each other across the screen using the `size` parameter provided by the game class. Lastly, we set the size and anchor positions.
 
+Here is the result:
+<img width="400" alt="All components of paint drop game" src="https://user-images.githubusercontent.com/34041975/220025769-7ed9e18f-605c-4c97-980f-54985e6ba406.png">
+
 ## Adding collision logic (Workshop 5)
 Now that our game looks prettier and we have basic dragging logic in place, we want to detect collisions between buckets and paint drops. Why? 2 reasons
 - If a paint drop goes "into" a bucket, we want it to disappear!
