@@ -462,6 +462,7 @@ class MyGame extends FlameGame with HasDraggableComponents {
     int number_of_drops = 20;
     int pixels_between_drops = 100;
     double size_of_drop = 50;
+    double size_of_bucket = 100;
     int num_colors = 4;
 
     // Load all images
