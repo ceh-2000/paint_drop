@@ -14,7 +14,8 @@ void main() {
   );
 }
 
-class MyGame extends FlameGame with HasDraggableComponents {
+class MyGame extends FlameGame
+    with HasDraggableComponents, HasCollisionDetection {
   @override
   Future<void> onLoad() async {
     // Constants
@@ -22,7 +23,8 @@ class MyGame extends FlameGame with HasDraggableComponents {
     int pixels_between_drops = 100;
     double size_of_drop = 50;
     double size_of_bucket = 100;
-    int num_colors = 4;
+    int num_colors = 5; // Add 1 to the actual number of colors so math works out
+    double speed = 30.0;
 
     // Load all images
     final redDrop = await images.load('red_drop.png');
@@ -45,29 +47,29 @@ class MyGame extends FlameGame with HasDraggableComponents {
 
     // Add the static paint buckets
     add(PaintBucket(
-      sprite: Sprite(redBucket),
-      position: Vector2(size.x * 0.2, size.y - size_of_bucket - 50),
-      size: Vector2(size_of_bucket, size_of_bucket),
-      anchor: Anchor.center,
-    ));
+        sprite: Sprite(redBucket),
+        position: Vector2(size.x * 0.2, size.y - size_of_bucket - 50),
+        size: Vector2(size_of_bucket, size_of_bucket),
+        anchor: Anchor.center,
+        color: 'red'));
     add(PaintBucket(
-      sprite: Sprite(blueBucket),
-      position: Vector2(size.x * 0.4, size.y - size_of_bucket - 50),
-      size: Vector2(size_of_bucket, size_of_bucket),
-      anchor: Anchor.center,
-    ));
+        sprite: Sprite(blueBucket),
+        position: Vector2(size.x * 0.4, size.y - size_of_bucket - 50),
+        size: Vector2(size_of_bucket, size_of_bucket),
+        anchor: Anchor.center,
+        color: 'blue'));
     add(PaintBucket(
-      sprite: Sprite(pinkBucket),
-      position: Vector2(size.x * 0.6, size.y - size_of_bucket - 50),
-      size: Vector2(size_of_bucket, size_of_bucket),
-      anchor: Anchor.center,
-    ));
+        sprite: Sprite(pinkBucket),
+        position: Vector2(size.x * 0.6, size.y - size_of_bucket - 50),
+        size: Vector2(size_of_bucket, size_of_bucket),
+        anchor: Anchor.center,
+        color: 'pink'));
     add(PaintBucket(
-      sprite: Sprite(yellowBucket),
-      position: Vector2(size.x * 0.8, size.y - size_of_bucket - 50),
-      size: Vector2(size_of_bucket, size_of_bucket),
-      anchor: Anchor.center,
-    ));
+        sprite: Sprite(yellowBucket),
+        position: Vector2(size.x * 0.8, size.y - size_of_bucket - 50),
+        size: Vector2(size_of_bucket, size_of_bucket),
+        anchor: Anchor.center,
+        color: 'yellow'));
 
     // Add the paint drops using a for-loop
     for (var i = 0;
@@ -123,7 +125,7 @@ class MyGame extends FlameGame with HasDraggableComponents {
           position: Vector2(r_loc.toDouble(), -i.toDouble()),
           size: Vector2(size_of_drop * 0.75, size_of_drop),
           anchor: Anchor.center,
-          speed: 10.0,
+          speed: speed,
           game_width: size.x,
           color: color));
     }

@@ -1,7 +1,9 @@
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/experimental.dart';
+import 'package:paint_drop/paint_bucket.dart';
 
-class PaintDrop extends SpriteComponent with DragCallbacks {
+class PaintDrop extends SpriteComponent with DragCallbacks, CollisionCallbacks {
   PaintDrop({
     super.sprite,
     super.position,
@@ -10,7 +12,7 @@ class PaintDrop extends SpriteComponent with DragCallbacks {
     required double speed,
     required double game_width,
     required String color,
-  }){
+  }) {
     _speed = speed;
     _game_width = game_width;
     _color = color;
@@ -21,6 +23,10 @@ class PaintDrop extends SpriteComponent with DragCallbacks {
   late final double _game_width;
   late final String _color;
   late final double _buffer;
+
+  Future<void> onLoad() async {
+    add(RectangleHitbox());
+  }
 
   @override
   void update(double dt) {
@@ -45,16 +51,33 @@ class PaintDrop extends SpriteComponent with DragCallbacks {
     double new_pos = position.x + event.delta.x;
 
     // Don't let star get dragged beyond right side bounds
-    if(new_pos > _game_width - _buffer){
+    if (new_pos > _game_width - _buffer) {
       new_pos = _game_width - _buffer;
     }
 
     // Don't let star get dragged beyond left side bounds
-    else if(new_pos < _buffer){
+    else if (new_pos < _buffer) {
       new_pos = _buffer;
     }
 
     // Set the new x-position; y-position stays the same
     position = Vector2(new_pos, position.y);
+  }
+
+  @override
+  void onCollisionStart(
+      Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is PaintBucket) {
+      // Check the color
+      if (other.getColor() == _color) {
+        print("We have a match!");
+      } else {
+        print("Colors did not match :(");
+      }
+
+      // Remove the paint drop from the screen
+      removeFromParent();
+    }
+    super.onCollisionStart(intersectionPoints, other);
   }
 }

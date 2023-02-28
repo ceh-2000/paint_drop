@@ -6,5 +6,14 @@ class PaintBucket extends SpriteComponent {
     super.position,
     super.size,
     super.anchor,
-  }){}
+    required String color,
+  }) {
+    _color = color;
+  }
+
+  late final String _color;
+
+  String getColor() {
+    return _color;
+  }
 }

@@ -613,6 +613,15 @@ Now that our game looks prettier and we have basic dragging logic in place, we w
 - If a paint drop goes "into" a bucket, we want it to disappear!
 - We want to keep track of whether paint drops going into the correct color paint bucket to give us a value to keep track of as the score for our game. 
 
+1. Just like with implementing draggable paint drops, we are going to use Mixins, in particular, the `HasCollisionDetection` mixin. Add this to `main.dart`:
+```
+class MyGame extends FlameGame with HasDraggableComponents, HasCollisionDetection {
+   // ...
+}
+```
+Now, we can add hit boxes to our components to check for collisions. 
+2. Next, we navigate to `lib/paint_drop.dart` to add `CollisionCallbacks`. We could add our callbacks to either the `PaintDrop` class or the `PaintBucket` class, but we want to make the paint drop disappear once it intersects with a bucket, so we choose to use `PaintDrop`. 
+3. Finally, we add some logic to `paint_drop.dart` and `paint_bucket.dart` to make collisions possible.
 
 ## Resources
 1. https://docs.flame-engine.org/1.6.0/tutorials/bare_flame_game.html
