@@ -23,7 +23,8 @@ class MyGame extends FlameGame
     int pixels_between_drops = 100;
     double size_of_drop = 50;
     double size_of_bucket = 100;
-    int num_colors = 5; // Add 1 to the actual number of colors so math works out
+    int num_colors =
+        5; // Add 1 to the actual number of colors so math works out
     double speed = 30.0;
 
     // Load all images

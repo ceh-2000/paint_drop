@@ -1,6 +1,7 @@
+import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
-class PaintBucket extends SpriteComponent {
+class PaintBucket extends SpriteComponent with CollisionCallbacks {
   PaintBucket({
     super.sprite,
     super.position,
@@ -15,5 +16,14 @@ class PaintBucket extends SpriteComponent {
 
   String getColor() {
     return _color;
+  }
+
+  Future<void> onLoad() async {
+    add(RectangleHitbox());
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollisionStart(intersectionPoints, other);
   }
 }

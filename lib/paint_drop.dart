@@ -65,8 +65,8 @@ class PaintDrop extends SpriteComponent with DragCallbacks, CollisionCallbacks {
   }
 
   @override
-  void onCollisionStart(
-      Set<Vector2> intersectionPoints, PositionComponent other) {
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollisionStart(intersectionPoints, other);
     if (other is PaintBucket) {
       // Check the color
       if (other.getColor() == _color) {
@@ -78,6 +78,5 @@ class PaintDrop extends SpriteComponent with DragCallbacks, CollisionCallbacks {
       // Remove the paint drop from the screen
       removeFromParent();
     }
-    super.onCollisionStart(intersectionPoints, other);
   }
 }
